@@ -1,0 +1,35 @@
+version: '3.3'
+
+
+networks:
+  proxynet:
+    driver: bridge
+
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./compose/nginx/Dockerfile
+    ports:
+      - 80:80
+    depends_on:
+      - parsing-manager-service
+    networks:
+      - proxynet
+    restart: on-failure
+
+  parsing-manager-service:
+    build:
+      context: .
+      dockerfile: ./compose/Dockerfile
+    expose:
+      - "8888"
+    environment:
+      - DEBUG=0
+    env_file:
+      - .envs/.app
+    command: /start
+    restart: on-failure
+    networks:
+      - proxynet

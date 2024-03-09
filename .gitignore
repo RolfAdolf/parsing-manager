@@ -1,0 +1,13 @@
+# Environment
+venv
+.envs
+
+# System garbage
+.idea
+.DS_Store
+
+# Python garbage
+__pycache__
+.cache
+
+log
