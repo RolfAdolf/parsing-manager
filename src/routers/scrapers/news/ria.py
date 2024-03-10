@@ -1,24 +1,37 @@
 from domains.models.news import RiaNewsPosts
 from domains.pipelines.news import RiaNewsKazanPipeline, RiaNewsMoscowPipeline, RiaNewsSpbPipeline
 from fastapi import APIRouter
+from schemes.requests import Limit, Offset
 
 
 router = APIRouter(prefix="/ria", tags=["News"])
 
 
 @router.get("/moscow")
-async def get_ria_news_moscow() -> RiaNewsPosts:
+async def get_ria_news_moscow(
+    limit: Limit = 10,
+    offset: Offset = 0,
+) -> RiaNewsPosts:
     """Получить последние новости Москвы (РИА Новости)"""
-    return await RiaNewsMoscowPipeline.handle()
+    news = await RiaNewsMoscowPipeline.handle()
+    return news[offset : limit + offset]
 
 
 @router.get("/spb")
-async def get_ria_news_spb() -> RiaNewsPosts:
+async def get_ria_news_spb(
+    limit: Limit = 10,
+    offset: Offset = 0,
+) -> RiaNewsPosts:
     """Получить последние новости Санкт-Петербурга (РИА Новости)"""
-    return await RiaNewsSpbPipeline.handle()
+    news = await RiaNewsSpbPipeline.handle()
+    return news[offset : limit + offset]
 
 
 @router.get("/kazan")
-async def get_ria_news_kazan() -> RiaNewsPosts:
+async def get_ria_news_kazan(
+    limit: Limit = 10,
+    offset: Offset = 0,
+) -> RiaNewsPosts:
     """Получить последние новости Казани (РИА Новости)"""
-    return await RiaNewsKazanPipeline.handle()
+    news = await RiaNewsKazanPipeline.handle()
+    return news[offset : limit + offset]

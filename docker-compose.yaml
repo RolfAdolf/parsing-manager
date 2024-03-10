@@ -31,5 +31,7 @@ services:
       - .envs/.app
     command: /start
     restart: on-failure
+    volumes:
+      - ./src/:/parsing-manager-service/
     networks:
       - proxynet
